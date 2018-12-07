@@ -35,12 +35,12 @@ for line in data:
     # add to big block
     massMatrix[x:x+l,y:y+w] = massMatrix[x:x+l,y:y+w]  + matrix
 
-print(massMatrix)
+#print(massMatrix)
 
 crossOvers = np.nonzero(massMatrix>1)
 
 # My answer
-print(len(crossOvers[0]))
+print('Number of cross-overs: ',len(crossOvers[0]))
 
 # Check which one doesn't overlap
 for line in data:
@@ -60,9 +60,11 @@ for line in data:
     w = int(line[ws:])
 
     # small block
-    bigCheck = np.nonzero(massMatrix[x:x+l,y:y+w]<1)
+    #bigCheck = np.nonzero(massMatrix[x:x+l,y:y+w]<2)
+    bigCheck = np.nonzero(massMatrix[x:x+l,y:y+w]-1)
+
     #print(bigCheck)
-    if len(bigCheck[0])==1:
-        print(line)
+    if len(bigCheck[0])==0:
+        print('Fabric with no overlaps: ',line)
 
     
