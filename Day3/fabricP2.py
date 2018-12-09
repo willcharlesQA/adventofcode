@@ -3,6 +3,10 @@ import numpy as np
 file = open('input.txt', 'r')
 data=list(file)
 
+x = []
+y = []
+l = []
+w = []
 """
 #1 @ 1,3: 4x4
 #2 @ 3,1: 4x4
@@ -13,27 +17,28 @@ massMatrix = np.zeros((1000,1000))
 #massMatrix = np.zeros((8,8))
 
 # Find the coordinates from the input data
-for line in data:
+for i in range(len(data)):
+    line = data[i]
     xs = line.find('@ ')+2
     xe = line.find(',')
-    x = int(line[xs:xe])
+    x.append( int(line[xs:xe]) )
 
     ys = line.find(',')+1
     ye = line.find(':')
-    y = int(line[ys:ye])
+    y.append( int(line[ys:ye]))
 
     ls = line.find(': ')+2
     le = line.find('x')
-    l = int(line[ls:le])
+    l.append( int(line[ls:le]) )
 
     ws = line.find('x')+1
-    w = int(line[ws:])
+    w.append( int(line[ws:]) )
 
     # small block
-    matrix = np.ones((l,w))
+    matrix = np.ones((l[i],w[i]))
 
     # add to big block
-    massMatrix[x:x+l,y:y+w] = massMatrix[x:x+l,y:y+w]  + matrix
+    massMatrix[x[i]:x[i]+l[i],y[i]:y[i]+w[i]] = massMatrix[x[i]:x[i]+l[i],y[i]:y[i]+w[i]]  + matrix
 
 #print(massMatrix)
 
@@ -43,28 +48,13 @@ crossOvers = np.nonzero(massMatrix>1)
 print('Number of cross-overs: ',len(crossOvers[0]))
 
 # Check which one doesn't overlap
-for line in data:
-    xs = line.find('@ ')+2
-    xe = line.find(',')
-    x = int(line[xs:xe])
-
-    ys = line.find(',')+1
-    ye = line.find(':')
-    y = int(line[ys:ye])
-
-    ls = line.find(': ')+2
-    le = line.find('x')
-    l = int(line[ls:le])
-
-    ws = line.find('x')+1
-    w = int(line[ws:])
-
+for i in range(len(data)):
+    
     # small block
-    #bigCheck = np.nonzero(massMatrix[x:x+l,y:y+w]<2)
-    bigCheck = np.nonzero(massMatrix[x:x+l,y:y+w]-1)
+    bigCheck = np.nonzero(massMatrix[x[i]:x[i]+l[i],y[i]:y[i]+w[i]] -1)
 
     #print(bigCheck)
     if len(bigCheck[0])==0:
-        print('Fabric with no overlaps: ',line)
+        print('Fabric with no overlaps: ',data[i])
 
     
