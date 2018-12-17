@@ -70,27 +70,32 @@ for i in range(len(duty)):
 
 vis = pd.DataFrame(visMatrix, columns=minutes, index=IDs) #, index=arrayOfDice
 
-#for i in range(len(duty)):
+'''
 print('0 is awake. 1 is asleep.')
 print(vis)
-#ax = sns.heatmap(vis) #, linewidths=.5
-#plt.show()
+ax = sns.heatmap(vis) #, linewidths=.5
+plt.show()
+'''
 
 IDlist = vis.index.unique().values
+print(IDlist)
+
+totalTimeAsleep = pd.DataFrame(index=IDlist)
+eachMinuteAsleep = pd.DataFrame(columns=minutes, index=IDlist)
 
 for ID in IDlist:
     timetable = vis.loc[ID]
-    totalTimeAsleep =  timetable.sum(axis=1).sum(axis=0) 
-    print('%s is asleep for %s minutes' %(ID,totalTimeAsleep))
-'''
-for ID in IDlist:
-    timetable = vis.loc[ID]
-    print(timetable.as_matrix)
-    totalAsleep = len( np.nonzero(timetable.as_matrix) )
-    #print('timetable for ',ID,'total asleep',totalAsleep)
-    print(totalAsleep)
-'''
-#print(vis.loc['#99'])
+    totalTimeAsleep.loc[ID,'Minutes'] = timetable.sum().sum()
+    eachMinuteAsleep.loc[ID,minutes] = timetable.sum()
+    #print('%s is asleep for %s minutes' %(ID,totalTimeAsleep.loc[ID]))
+
+print(totalTimeAsleep.idxmax())
+print(totalTimeAsleep.max())
+
+#print(eachMinuteAsleep.max())
+#print(eachMinuteAsleep.idxmax())
+
+
 
 
 
